@@ -1,39 +1,36 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 
+import './screens/backlog_screen.dart';
+import './screens/fortunewheel_screen.dart';
 
-void main() => runApp(const NavigationBarApp());
+void main() => runApp(const RankTopApp());
 
-class NavigationBarApp extends StatelessWidget {
-  const NavigationBarApp({super.key});
+class RankTopApp extends StatelessWidget {
+  const RankTopApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: NavigationExample());
+    return const MaterialApp(home: RankTop());
   }
 }
 
-class NavigationExample extends StatefulWidget {
-  const NavigationExample({super.key});
+class RankTop extends StatefulWidget {
+  const RankTop({super.key});
 
   @override
-  State<NavigationExample> createState() => _NavigationExampleState();
+  State<RankTop> createState() => _RankTopState();
 }
 
-class _NavigationExampleState extends State<NavigationExample> {
-  int currentPageIndex = 0;
-  // controlador de fortune wheel 
-  final controller = StreamController<int>.broadcast();
-
-
-    @override
-    void dispose() {
-      controller.close();
-      super.dispose();
-    }
+class _RankTopState extends State<RankTop> {
+    int currentPageIndex = 0;
     
-    // funcion para el dialog
+    late final List<Widget> pages = [
+      const BacklogScreen(),
+      const FortunewheelScreen(),
+      const BacklogScreen(), 
+    ];
+
     Future<void> _dialogBuilder(BuildContext context) {
       return showDialog<void>(
         context: context,
@@ -71,9 +68,6 @@ class _NavigationExampleState extends State<NavigationExample> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-
-    
-
     return Scaffold(
       appBar: AppBar(title: Text("Crear un usestate para cambiar estado "),),
       bottomNavigationBar: NavigationBar(
@@ -106,121 +100,7 @@ class _NavigationExampleState extends State<NavigationExample> {
         onPressed:  () => _dialogBuilder(context), 
         child: Icon(Icons.add),
       ) ,
-
-
-      // Pages on screen 
-      body: <Widget>[
-        //Backlog page 
-        Column(
-          children: [
-             Card(
-              child: Row(
-                children: [
-                  Image.network(
-                    width: 150,
-                    height: 150,
-                    'https://media.istockphoto.com/id/1147544807/es/vector/no-imagen-en-miniatura-gr%C3%A1fico-vectorial.jpg?s=612x612&w=0&k=20&c=Bb7KlSXJXh3oSDlyFjIaCiB9llfXsgS7mHFZs6qUgVk='
-                  ),
-                  Expanded(                
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,   
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Text(
-                              style: TextStyle(height: 2, fontSize: 25),
-                              'Elvis Presley el'
-                            ),
-                            IconButton(onPressed: (()=>{}), icon:const Icon(Icons.edit)),
-                          ],
-                        ),
-                        OutlinedButton(child: Text('Puntuar'),onPressed: (){}),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-        
-        
-        /// Fortune Page 
-
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 300,  
-              child: FortuneWheel(
-                duration: Duration(seconds: 10),
-                selected: controller.stream,
-                items: const [
-                  FortuneItem(child: Text('Han Solo')),
-                  FortuneItem(child: Text('Yoda')),
-                  FortuneItem(child: Text('Obi-Wan Kenobi')),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            ElevatedButton(
-              onPressed: () {
-                final randomIndex = Fortune.randomInt(0, 3);
-                controller.add(randomIndex);
-              },
-              child: const Text("Girar"),
-            )
-          ],
-        ),
-        
-
-        /// Messages page
-        ListView.builder(
-          reverse: true,
-          itemCount: 2,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == 0) {
-              return Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(
-                    'Hello',
-                    style: theme.textTheme.bodyLarge!.copyWith(color: theme.colorScheme.onPrimary),
-                  ),
-                ),
-              );
-            }
-            return Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                margin: const EdgeInsets.all(8.0),
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Text(
-                  'Hi!',
-                  style: theme.textTheme.bodyLarge!.copyWith(color: theme.colorScheme.onPrimary),
-                ),
-              ),
-            );
-          },
-        ),
-      ][currentPageIndex],
+      body: pages[currentPageIndex],
     );
   }
 }
