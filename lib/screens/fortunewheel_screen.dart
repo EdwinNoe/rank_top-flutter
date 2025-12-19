@@ -7,10 +7,21 @@ class FortunewheelScreen extends StatefulWidget {
 
   @override
   State<FortunewheelScreen> createState() => _FortunewheelScreenState();
+
+
 }
 
 class _FortunewheelScreenState extends State<FortunewheelScreen> {
   final controller = StreamController<int>.broadcast();
+
+  @override
+  void dispose() {
+    controller.close(); 
+    super.dispose();
+  }
+
+  int duration=0;
+  bool isSpinnin=false;
   
   @override
   Widget build(BuildContext context) {
@@ -20,7 +31,7 @@ class _FortunewheelScreenState extends State<FortunewheelScreen> {
         SizedBox(
           height: 300,
           child: FortuneWheel(
-            duration: Duration(seconds: 10),
+            duration: Duration(seconds: duration),
             selected: controller.stream,
             items: const [
               FortuneItem(child: Text('Han Solo')),
@@ -34,8 +45,16 @@ class _FortunewheelScreenState extends State<FortunewheelScreen> {
 
         ElevatedButton(
           onPressed: () {
-            final randomIndex = Fortune.randomInt(0, 3);
-            controller.add(randomIndex);
+            if (isSpinnin==false){
+              setState(() {
+                isSpinnin=true;
+                duration = 5; 
+              });
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                final randomIndex = Fortune.randomInt(0, 3);
+                controller.add(randomIndex);
+              });
+            }
           },
           child: const Text("Girar"),
         ),

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
 import './screens/backlog_screen.dart';
 import './screens/fortunewheel_screen.dart';
 
@@ -11,7 +10,10 @@ class RankTopApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: RankTop());
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: RankTop(),
+    );
   }
 }
 
@@ -20,56 +22,71 @@ class RankTop extends StatefulWidget {
 
   @override
   State<RankTop> createState() => _RankTopState();
-}
+} 
 
 class _RankTopState extends State<RankTop> {
-    int currentPageIndex = 0;
-    
-    late final List<Widget> pages = [
-      const BacklogScreen(),
-      const FortunewheelScreen(),
-      const BacklogScreen(), 
-    ];
+  int currentPageIndex = 0;
 
-    Future<void> _dialogBuilder(BuildContext context) {
-      return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Add Movie'),
-            content: const Form(
-              child: TextField(
-                decoration: InputDecoration(hintText: 'Nombre de la pelicula '),
-                autofocus: true,
-              )
-              ,
-            ),
-            actions: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.labelLarge),
-                child: const Text('Cerrar'), 
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                style: TextButton.styleFrom(textStyle: Theme.of(context).textTheme.labelLarge),
-                child: const Text('Enviar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+  List<String> movieTitles = [];
+
+  final TextEditingController _movieNameController = TextEditingController();
+
+  late final List<Widget> pages = [
+    const BacklogScreen(),
+    const FortunewheelScreen(),
+    const BacklogScreen(), 
+  ];
+
+
+  void _addMovie() {
+    if (_movieNameController.text.isNotEmpty) {
+      setState(() {
+        movieTitles.add(_movieNameController.text);
+      });
+      _movieNameController.clear(); 
+      Navigator.of(context).pop();
     }
+  }
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add Movie'),
+          content: Form(
+            child: TextField(
+              controller: _movieNameController, 
+              decoration: const InputDecoration(hintText: 'Nombre de la película'),
+              autofocus: true,
+              keyboardType:TextInputType.text ,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cerrar'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              onPressed: _addMovie,
+              child: const Text('Enviar'), 
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _movieNameController.dispose(); 
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text("Crear un usestate para cambiar estado "),),
+      appBar: AppBar(title: const Text("RankTop Movies")),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
@@ -80,26 +97,23 @@ class _RankTopState extends State<RankTop> {
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.watch_later),
             icon: Icon(Icons.watch_later),
             label: 'Backlog',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.play_circle_fill),
             icon: Icon(Icons.play_circle_fill),
             label: 'Fortune Wheel',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.star),
             icon: Icon(Icons.star),
             label: 'Rank',
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed:  () => _dialogBuilder(context), 
-        child: Icon(Icons.add),
-      ) ,
+        onPressed: () => _dialogBuilder(context),
+        child: const Icon(Icons.add),
+      ),
       body: pages[currentPageIndex],
     );
   }
