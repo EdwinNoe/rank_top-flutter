@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "667963688914",
+    "project_id": "ranktop-ddf9c",
+    "storage_bucket": "ranktop-ddf9c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667963688914:android:dad8027e7c055db5a52a0b",
+        "android_client_info": {
+          "package_name": "com.example.rank_top"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVreGO5o82UxJIKumjv1JhtZyQCp8cLD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

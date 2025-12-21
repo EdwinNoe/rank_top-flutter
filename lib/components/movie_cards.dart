@@ -9,7 +9,11 @@ class MovieCards extends StatefulWidget {
 
 class _MovieCardsState extends State<MovieCards> {
   TextEditingController _movieNameController = TextEditingController();
-  bool isEditing = true;
+
+  static const List<String> list = <String>['1', '2', '3', '4', '5','6', '7', '8', '9', '10'];
+  String dropdownValue = list.first;
+
+  bool isEditing = false;
 
   @override
   void initState() {
@@ -27,6 +31,47 @@ class _MovieCardsState extends State<MovieCards> {
     setState(() {
       isEditing = !isEditing;
     });
+  }
+
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: const Text('Score Movie'),
+              content: DropdownButton<String>(
+                value: dropdownValue,
+                items: list.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(value: value, child: Text(value));
+                }).toList(),
+                onChanged: (String? value) {
+                  setDialogState(() {
+                    dropdownValue = value!;
+                  });
+                  setState(() {}); 
+                },
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cerrar'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                TextButton(
+                  onPressed: () {
+                    print("Puntaje enviado: $dropdownValue");
+                    Navigator.of(context).pop();
+                  }, 
+                  child: const Text('Enviar')
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -50,11 +95,11 @@ class _MovieCardsState extends State<MovieCards> {
                     Expanded(
                       child: !isEditing
                           ? Text(
-                              textAlign:TextAlign.center,
+                              textAlign: TextAlign.center,
                               _movieNameController.text,
                               style: const TextStyle(fontSize: 18),
                             )
-                          : TextField( 
+                          : TextField(
                               controller: _movieNameController,
                               autofocus: true,
                               decoration: const InputDecoration(
@@ -70,7 +115,7 @@ class _MovieCardsState extends State<MovieCards> {
                   ],
                 ),
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () => _dialogBuilder(context),
                   child: const Text('Puntuar'),
                 ),
               ],

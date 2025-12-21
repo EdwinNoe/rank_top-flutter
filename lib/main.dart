@@ -3,7 +3,18 @@ import 'package:flutter/material.dart';
 import './screens/backlog_screen.dart';
 import './screens/fortunewheel_screen.dart';
 
-void main() => runApp(const RankTopApp());
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+// void main() => runApp(const RankTopApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const RankTopApp());
+}
 
 class RankTopApp extends StatelessWidget {
   const RankTopApp({super.key});
