@@ -13,7 +13,7 @@ class _BacklogScreenState extends State<BacklogScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        MovieCards()
+        
       ],
     );
   }

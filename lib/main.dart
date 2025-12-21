@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:rank_top/firebase_service/FirebaseService.dart';
+import 'package:rank_top/firebase_service/model.dart';
 import './screens/backlog_screen.dart';
 import './screens/fortunewheel_screen.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
-// void main() => runApp(const RankTopApp());
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +37,6 @@ class RankTop extends StatefulWidget {
 class _RankTopState extends State<RankTop> {
   int currentPageIndex = 0;
 
-  List<String> movieTitles = [];
 
   final TextEditingController _movieNameController = TextEditingController();
 
@@ -50,10 +48,12 @@ class _RankTopState extends State<RankTop> {
 
 
   void _addMovie() {
+    FirebaseService fireBase= new FirebaseService();
+    Movie movie= new Movie();
+
     if (_movieNameController.text.isNotEmpty) {
-      setState(() {
-        movieTitles.add(_movieNameController.text);
-      });
+      movie.setname(_movieNameController.text);
+      fireBase.addMovie(movie);
       _movieNameController.clear(); 
       Navigator.of(context).pop();
     }
