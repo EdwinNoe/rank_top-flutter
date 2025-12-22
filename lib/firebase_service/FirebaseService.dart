@@ -13,11 +13,13 @@ class FirebaseService {
     }
   }
 
+
   Stream<List<Movie>> getMoviesStream() {
     return _db.collection('movies').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => Movie.fromMap(doc.data())).toList();
+      return snapshot.docs.map((doc) {
+        return Movie.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
     });
   }
-
   
 }

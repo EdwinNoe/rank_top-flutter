@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 class MovieCards extends StatefulWidget {
-  const MovieCards({super.key});
+  final String initialName;
+  final String imageUrl;
+
+  const MovieCards({
+    super.key,
+    required this.initialName, 
+    required this.imageUrl,  
+  });
+  
 
   @override
   State<MovieCards> createState() => _MovieCardsState();
@@ -18,7 +26,7 @@ class _MovieCardsState extends State<MovieCards> {
   @override
   void initState() {
     super.initState();
-    _movieNameController = TextEditingController(text: 'Elvis Presley');
+    _movieNameController = TextEditingController(text: widget.initialName);
   }
 
   @override

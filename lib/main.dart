@@ -56,6 +56,8 @@ class _RankTopState extends State<RankTop> {
       fireBase.addMovie(movie);
       _movieNameController.clear(); 
       Navigator.of(context).pop();
+      setState(() {
+      });
     }
   }
 
