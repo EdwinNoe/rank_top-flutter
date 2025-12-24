@@ -33,8 +33,7 @@ class _BacklogScreenState extends State<BacklogScreen> {
           itemCount: movies.length,
           itemBuilder: (BuildContext context, int index) {
             return MovieCards(
-              initialName: movies[index].name, 
-              imageUrl: movies[index].image
+              currentMovie: movies[index],
             );
           },
         );
