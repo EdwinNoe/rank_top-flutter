@@ -10,7 +10,6 @@ class MovieCards extends StatefulWidget {
     super.key,
     required this.currentMovie
   });
-  
 
   @override
   State<MovieCards> createState() => _MovieCardsState();
@@ -39,6 +38,7 @@ class _MovieCardsState extends State<MovieCards> {
 
   void _editMovieName() {
     widget.currentMovie.name=_movieNameController.text;
+    widget.currentMovie.finished=true;
     fireBaseService.Update(widget.currentMovie);
 
     setState(() {
@@ -82,6 +82,8 @@ class _MovieCardsState extends State<MovieCards> {
                 ),
                 TextButton(
                   onPressed: () {
+                    widget.currentMovie.score=dropdownValue;
+                    fireBaseService.Update(widget.currentMovie);
                     print("Puntaje enviado: $dropdownValue");
                     Navigator.of(context).pop();
                   }, 
