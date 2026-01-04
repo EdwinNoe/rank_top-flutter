@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
-import 'package:rank_top/firebase_service/FirebaseService.dart';
-import 'package:rank_top/firebase_service/model.dart';
+import 'package:rank_top/services/FirebaseService.dart';
+import 'package:rank_top/services/model.dart';
 
 class FortunewheelScreen extends StatefulWidget {
   const FortunewheelScreen({super.key});

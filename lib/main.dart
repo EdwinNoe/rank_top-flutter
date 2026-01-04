@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:rank_top/firebase_service/FirebaseService.dart';
-import 'package:rank_top/firebase_service/model.dart';
+import 'package:rank_top/components/fab_addmovie.dart';
 import './screens/backlog_screen.dart';
 import './screens/fortunewheel_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,63 +36,12 @@ class _RankTopState extends State<RankTop> {
   int currentPageIndex = 0;
 
 
-  final TextEditingController _movieNameController = TextEditingController();
-
   late final List<Widget> pages = [
     const BacklogScreen(),
     const FortunewheelScreen(),
     const BacklogScreen(), 
   ];
 
-
-  void _addMovie() {
-    FirebaseService fireBase= new FirebaseService();
-    Movie movie= new Movie();
-
-    if (_movieNameController.text.isNotEmpty) {
-      movie.setname(_movieNameController.text);
-      fireBase.addMovie(movie);
-      _movieNameController.clear(); 
-      Navigator.of(context).pop();
-      setState(() {
-      });
-    }
-  }
-
-  Future<void> _dialogBuilder(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add Movie'),
-          content: Form(
-            child: TextField(
-              controller: _movieNameController, 
-              decoration: const InputDecoration(hintText: 'Nombre de la película'),
-              autofocus: true,
-              keyboardType:TextInputType.text ,
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cerrar'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              onPressed: _addMovie,
-              child: const Text('Enviar'), 
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _movieNameController.dispose(); 
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,10 +70,7 @@ class _RankTopState extends State<RankTop> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _dialogBuilder(context),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: FabAddmovie(),
       body: pages[currentPageIndex],
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rank_top/components/movie_cards.dart';
-import 'package:rank_top/firebase_service/FirebaseService.dart';
-import 'package:rank_top/firebase_service/model.dart';
+import 'package:rank_top/services/FirebaseService.dart';
+import 'package:rank_top/services/model.dart';
 
 class BacklogScreen extends StatefulWidget {
   const BacklogScreen({super.key});

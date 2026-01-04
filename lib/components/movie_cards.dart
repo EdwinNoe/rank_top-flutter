@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:rank_top/firebase_service/FirebaseService.dart';
-import '../firebase_service/model.dart';
+import 'package:rank_top/services/FirebaseService.dart';
+import '../services/model.dart';
 
 class MovieCards extends StatefulWidget {
   final Movie currentMovie; 
